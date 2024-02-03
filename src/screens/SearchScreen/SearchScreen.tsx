@@ -22,15 +22,19 @@ const SearchScreen = () => {
           placeholderTextColor={DarkAppTheme.colors.placeholderText}
           value={query}
           onChangeText={setQuery}
+          testID="search-input"
         />
       )}
       {!isLoading && results.length === 0 && hasSearched ? (
         <EmptyState />
       ) : (
         <FlatList
+          testID="search-results-list"
           data={results}
           keyExtractor={(item) => item.show.id.toString()}
-          renderItem={({ item }) => <ShowCard show={item.show} />}
+          renderItem={({ item }) => (
+            <ShowCard show={item.show} testID={`show-${item.show.id}`} />
+          )}
         />
       )}
     </View>

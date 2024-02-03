@@ -12,7 +12,7 @@ const PageErrorView = ({ errorText }: PageErrorViewProps) => {
   const styles = pageErrorViewStyles(theme);
 
   return (
-    <View style={styles.viewContainer}>
+    <View style={styles.viewContainer} testID="page-error-view">
       <Text style={styles.errorText}>{errorText}</Text>
     </View>
   );

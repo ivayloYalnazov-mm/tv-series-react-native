@@ -14,9 +14,12 @@ const FavoriteShowsScreen = () => {
   return (
     <View style={favoriteShowsScreenStyles.container}>
       <FlatList
+        testID="favorite-shows-list"
         data={favoriteShows}
         keyExtractor={(show) => show.id.toString()}
-        renderItem={({ item }) => <ShowCard show={item} />}
+        renderItem={({ item }) => (
+          <ShowCard show={item} testID={`favorite-show-${item.id}`} />
+        )}
       />
     </View>
   );

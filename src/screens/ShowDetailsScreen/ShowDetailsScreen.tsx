@@ -3,18 +3,13 @@ import {
   EpisodesScreenNavigationProp,
   ShowDetailsScreenRouteProp,
 } from "@/navigation/types";
-import {
-  Text,
-  ScrollView,
-  View,
-  TouchableOpacity,
-  Linking,
-} from "react-native";
+import { Text, ScrollView, TouchableOpacity } from "react-native";
 import { useShowDetails } from "@/hooks";
 import { useNavigation, useTheme } from "@react-navigation/native";
 import { showDetailsScreenStyles } from "./ShowDetailsScreen.styles";
 import { AppImage, PageErrorView, PageLoadingIndicator } from "@/components";
 import { stripHtml } from "@/utils";
+import { ShowInfo } from "./components/ShowInfo";
 
 const ShowDetailsScreen = ({
   route: { params },
@@ -40,7 +35,7 @@ const ShowDetailsScreen = ({
   }
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={styles.container} testID="show-details">
       <AppImage
         source={{
           uri: details?.image?.medium,
@@ -50,44 +45,19 @@ const ShowDetailsScreen = ({
 
       <Text style={styles.title}>{details?.name}</Text>
 
-      <View style={styles.infoContainer}>
-        <Text style={styles.infoText}>Type: {details?.type || "N/A"}</Text>
-        <Text style={styles.infoText}>
-          Language: {details?.language || "N/A"}
-        </Text>
-        <Text style={styles.infoText}>
-          Genres: {details?.genres?.join(", ") || "N/A"}
-        </Text>
-        <Text style={styles.infoText}>Status: {details?.status || "N/A"}</Text>
-        <Text style={styles.infoText}>
-          Rating: {details?.rating?.average || "N/A"}
-        </Text>
-        {details?.officialSite && (
-          <TouchableOpacity
-            onPress={() => Linking.openURL(details.officialSite)}
-            style={styles.linkButton}
-          >
-            <Text style={styles.linkText}>Official Site</Text>
-          </TouchableOpacity>
-        )}
-      </View>
+      <ShowInfo show={details} />
 
       <Text style={styles.description}>{cleanSummary}</Text>
 
-      <TouchableOpacity
-        onPress={navigateToEpisodesScreen}
-        style={[
-          styles.button,
-          {
-            backgroundColor: isOffline
-              ? theme.colors.placeholderText
-              : theme.colors.primary,
-          },
-        ]}
-        disabled={isOffline}
-      >
-        <Text style={styles.buttonText}>View Episodes</Text>
-      </TouchableOpacity>
+      {!isOffline && (
+        <TouchableOpacity
+          onPress={navigateToEpisodesScreen}
+          style={styles.button}
+          testID="view-episodes-button"
+        >
+          <Text style={styles.buttonText}>View Episodes</Text>
+        </TouchableOpacity>
+      )}
     </ScrollView>
   );
 };

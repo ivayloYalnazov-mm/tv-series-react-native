@@ -4,7 +4,7 @@ import { render, waitFor, fireEvent } from "@testing-library/react-native";
 import { EpisodesScreen } from "./EpisodesScreen";
 import { useLocalInfiniteScrollData, useShowEpisodes } from "@/hooks";
 import { Episode } from "@/types";
-import { View } from "react-native";
+import { MockFlatList } from "@/__mocks__";
 
 jest.mock("@/hooks", () => ({
   useLocalInfiniteScrollData: jest.fn(() => ({
@@ -18,7 +18,13 @@ jest.mock("@/hooks", () => ({
 }));
 
 jest.mock("react-native/Libraries/Lists/FlatList", () => {
-  return jest.fn(({ data }) => <MockFlatList data={data} />);
+  return jest.fn(({ data }) => (
+    <MockFlatList
+      data={data}
+      containerTestID="episodes-list"
+      itemPrefixTestID="episode-item"
+    />
+  ));
 });
 
 jest.mock("./components/EpisodeItem/EpisodeItem", () => "EpisodeItem");
@@ -170,11 +176,3 @@ describe("EpisodesScreen", () => {
     });
   });
 });
-
-const MockFlatList = ({ data }: { data: { id: string }[] }) => (
-  <View testID="episodes-list">
-    {data.map((item) => (
-      <View key={item.id} testID={`episode-item-${item.id}`}></View>
-    ))}
-  </View>
-);

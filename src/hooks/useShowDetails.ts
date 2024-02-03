@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { GENERIC_ERROR_MESSAGE, storageKeys } from "@/constants";
 import { fetchShowById } from "@/services/apiService";
 import { getStorageItem, setStorageItem } from "@/services/persistenceService";
@@ -16,18 +16,34 @@ const useShowDetails = ({ showId }: UseShowDetailsProps) => {
   const navigation = useNavigation<SearchScreenRouteProp>();
   const [details, setDetails] = useState<Show | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
   const { isOffline } = useNetworkStatus();
 
+  const handleError = useCallback(
+    () =>
+      !isOffline &&
+      Alert.alert(
+        "Error",
+        GENERIC_ERROR_MESSAGE,
+        [{ text: "OK", onPress: () => navigation.navigate("SearchScreen") }],
+        { cancelable: false },
+      ),
+    [isOffline, navigation],
+  );
+
   useEffect(() => {
-    if (isOffline) {
+    if (hasError && !isOffline) {
+      handleError();
+    }
+  }, [isOffline, handleError, hasError]);
+
+  useEffect(() => {
+    if (isOffline || !showId) {
       setIsLoading(false);
       return;
     }
-    const fetchShowDetails = async () => {
-      if (!showId) {
-        return;
-      }
 
+    const fetchShowDetails = async () => {
       setIsLoading(true);
 
       const show = getStorageItem<Show>(storageKeys.CACHED_SHOW);
@@ -42,24 +58,14 @@ const useShowDetails = ({ showId }: UseShowDetailsProps) => {
         setStorageItem(storageKeys.CACHED_SHOW, data);
         setDetails(data);
       } catch (error) {
-        Alert.alert(
-          "Error",
-          GENERIC_ERROR_MESSAGE,
-          [
-            {
-              text: "OK",
-              onPress: () => navigation.navigate("SearchScreen"),
-            },
-          ],
-          { cancelable: false },
-        );
+        setHasError(true);
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchShowDetails();
-  }, [showId, isOffline, navigation]);
+  }, [showId, isOffline]);
 
   const returnDetails = useMemo(() => {
     if (isOffline) {

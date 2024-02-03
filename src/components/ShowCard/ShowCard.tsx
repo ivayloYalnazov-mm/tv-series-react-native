@@ -10,9 +10,10 @@ import { useFavoriteShows } from "@/hooks";
 
 interface ShowCardProps {
   show: Show;
+  testID?: string;
 }
 
-const ShowCard = ({ show }: ShowCardProps) => {
+const ShowCard = ({ show, testID }: ShowCardProps) => {
   const theme = useTheme();
   const styles = showCardStyles(theme);
   const navigation = useNavigation<ShowDetailsScreenNavigationProp>();
@@ -45,7 +46,7 @@ const ShowCard = ({ show }: ShowCardProps) => {
   );
 
   return (
-    <View>
+    <View testID={testID}>
       <View style={styles.favoriteButton}>
         <FavoritesButton
           onPress={toggleFavorite}

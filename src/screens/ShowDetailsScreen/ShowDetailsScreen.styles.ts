@@ -5,6 +5,7 @@ export const showDetailsScreenStyles = (theme: AppTheme) =>
   StyleSheet.create({
     button: {
       alignItems: "center",
+      backgroundColor: theme.colors.primary,
       borderRadius: 5,
       justifyContent: "center",
       margin: 10,
@@ -30,23 +31,6 @@ export const showDetailsScreenStyles = (theme: AppTheme) =>
     image: {
       height: 300,
       width: "100%",
-    },
-    infoContainer: {
-      padding: 10,
-    },
-    infoText: {
-      color: theme.colors.text,
-      fontSize: 16,
-      marginBottom: 5,
-    },
-    linkButton: {
-      alignSelf: "flex-start",
-      marginTop: 10,
-    },
-    linkText: {
-      color: theme.colors.primary,
-      fontSize: 16,
-      textDecorationLine: "underline",
     },
     title: {
       color: theme.colors.text,
