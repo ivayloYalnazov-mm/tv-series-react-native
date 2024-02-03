@@ -7,15 +7,16 @@ import { episodeItemStyles } from "./EpisodeItem.styles";
 
 interface EpisodeItemProps {
   episode: Episode;
+  testID?: string;
 }
 
-const EpisodeItem = ({ episode }: EpisodeItemProps) => {
+const EpisodeItem = ({ episode, testID }: EpisodeItemProps) => {
   const theme = useTheme();
   const styles = episodeItemStyles(theme);
   const summaryText = episode?.summary?.replace(/<\/?[^>]+(>|$)/g, "");
 
   return (
-    <TouchableOpacity style={styles.item}>
+    <TouchableOpacity style={styles.item} testID={testID}>
       <AppImage source={{ uri: episode?.image?.medium }} style={styles.image} />
       <View style={styles.infoContainer}>
         <Text style={styles.title}>{episode?.name}</Text>
