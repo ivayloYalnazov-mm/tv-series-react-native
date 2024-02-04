@@ -3,7 +3,7 @@ import { GENERIC_ERROR_MESSAGE, storageKeys } from "@/constants";
 import { fetchShowById } from "@/services/apiService";
 import { getStorageItem, setStorageItem } from "@/services/persistenceService";
 import { Show, ShowData } from "@/types";
-import { useNetworkStatus } from "./useNetworkStatus/useNetworkStatus";
+import { useNetworkStatus } from "../useNetworkStatus/useNetworkStatus";
 import { Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { SearchScreenRouteProp } from "@/navigation/types";

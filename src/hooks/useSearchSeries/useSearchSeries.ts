@@ -3,7 +3,7 @@ import { searchSeriesByQuery } from "@/services/apiService";
 import { getStorageItem, setStorageItem } from "@/services/persistenceService";
 import { ShowData } from "@/types";
 import { useState, useEffect, useCallback, useMemo } from "react";
-import { useNetworkStatus } from "./useNetworkStatus/useNetworkStatus";
+import { useNetworkStatus } from "../useNetworkStatus/useNetworkStatus";
 
 const useSearchSeries = () => {
   const [query, setQuery] = useState("");
